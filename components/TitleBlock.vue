@@ -5,11 +5,8 @@
         </h3>
     </div>
 </template>
-<script>
-export default {
-    name: "TitleBlock",
-    props: { title: String }
-}
+<script setup>
+defineProps(['title'])
 </script>
 <style scoped>
 .title {

@@ -1,59 +1,3 @@
-<!-- <template>
-    <div class="main-div">
-        <div id="subscribe" class="sub-div">
-            <div class="text-div">
-                <h3>Subscribe to my mailing list.</h3>
-                <p>In order to get notified of any new post 🙂.</p>
-            </div>
-            <form @submit.prevent="subscribe">
-                <div class="form-group">
-                    <input type="email" v-model="email" placeholder="Email Address">
-                    <button type="submit">Subscribe</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</template>
-
-<script>
-import axios from 'axios';
-
-export default {
-    name: 'Subscribe',
-    data() {
-        return {
-            email: '',
-        };
-    },
-    methods: {
-        async subscribe() {
-            const apiKey = '3e44df2b1bcc7dd61f8fa362660e5b3b-us10';
-            const serverPrefix = 'us10';
-            const listId = 'd23ed1b742';
-            const url = `https://${serverPrefix}.api.mailchimp.com/3.0/lists/${listId}/members`;
-            const data = {
-                email_address: this.email,
-                status: 'pending',
-            };
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${apiKey}`,
-                },
-            };
-
-            try {
-                const response = await axios.post(url, data, config);
-                console.log(response.data);
-                alert('Subscription Successful');
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Subscription failed');
-            }
-        },
-    },
-};
-</script> -->
 <template>
     <div class="main-div">
         <div id="subscribe" class="sub-div">
@@ -71,40 +15,25 @@ export default {
     </div>
 </template>
 
-<script>
-// import client from "@mailchimp/mailchimp_marketing";
+<script setup>
+const email = ref('')
+const subscribe = async () => {
+    const response = await $fetch('/api/subscribe', {
+        method: 'post',
+        body: { email_address: email.value }
+    })
+    if (response.success) {
+        alert('Subscription successful')
+    } else {
+        if (response.body.title == 'Member Exists') {
+            alert('You are already Subscribed')
+        } else {
+            alert('Subscription failed')
+        }
+    }
 
-client.setConfig({
-    apiKey: "3e44df2b1bcc7dd61f8fa362660e5b3b-us10",
-    server: "us10",
-});
-const list_id = "d23ed1b742"
-export default {
-    name: 'Subscribe',
-    data() {
-        return {
-            email: '',
-        };
-    },
-    methods: {
-        async subscribe() {
-            try {
-                const response = await client.lists.addListMember(list_id, {
-                    email_address: this.email,
-                    status: "pending",
-                });
-                console.log(response);
-                alert('Subscription Successful');
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Subscription failed');
-            }
-        },
-    },
-};
+}
 </script>
-
-
 <style scoped>
 .main-div {
     margin: 72px auto;

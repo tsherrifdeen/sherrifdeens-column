@@ -15,51 +15,40 @@
         </div>
         <div v-if="categories" class="flex-div">
             <div v-for="category in categories" :key="category._id" class="category-div">
-                <router-link :to="{ name: 'category', params: { slug: category.slug.current, title: category.title } }">
+                <NuxtLink :to="`/category/${category.slug.current}`">
                     <h4 class="category-name">{{ category.title }}</h4>
                     <p class="category-desc">{{ category.description ? category.description.substring(0, 20) : '' }}</p>
-                </router-link>
+                </NuxtLink>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-import { fetchBlogData } from '@/composables/getPosts';
-import Hero from "../components/Hero.vue";
-import TitleBlock from "../components/TitleBlock.vue";
-import Details from "../components/Details.vue";
-import Loader from '@/components/Loader.vue';
-
-export default {
-    name: 'Categories',
-    components: { Hero, TitleBlock, Details, Loader },
-    data() {
-        return {
-            query: `*[_type == "category"] {
+<script setup>
+const query = `*[_type == "category"] {
                 _id, 
                 description,
                 title, 
                 slug,
-            }`,
-            categories: [],
-            loading: true,
-            error: null,
-        };
-    },
-    created() {
-        fetchBlogData(this.query)
-            .then(result => {
-                this.categories = result;
-                this.loading = false;
-                console.log(result);
-            })
-            .catch(error => {
-                this.error = error;
-            });
-    }
-};
+            }`
+const categories = ref([])
+const loading = ref(true)
+const error = ref(null)
+
+onMounted(() => document.title = "Sherrifdeen's Column - Categories")
+
+watchEffect(() => {
+    fetchBlogData(query)
+        .then(result => {
+            categories.value = result;
+            loading.value = false;
+        })
+        .catch(error => {
+            this.error.value = error;
+        });
+})
 </script>
+
 
 <style scoped>
 .main-div {

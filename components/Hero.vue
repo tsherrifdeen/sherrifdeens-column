@@ -5,13 +5,7 @@
         <slot name="title"></slot>
     </div>
 </template>
-<script>
-import Header from "./Header.vue";
-import TitleBlock from "./TitleBlock.vue";
-export default {
-    components: { Header, TitleBlock },
-}
-</script>
+<script setup></script>
 <style scoped>
 .main {
     border-radius: 10px;

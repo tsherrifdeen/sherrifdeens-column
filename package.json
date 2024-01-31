@@ -13,5 +13,16 @@
     "nuxt": "^3.9.3",
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
+    "@nuxtjs/sanity": "^1.8.3",
+    "@portabletext/vue": "^1.0.6",
+    "@sanity/client": "^6.11.3",
+    "@sanity/image-url": "^1.0.2",
+    "vue-spinner": "^1.0.4"
   }
 }

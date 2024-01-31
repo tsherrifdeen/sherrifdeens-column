@@ -1,28 +1,16 @@
-<template lang="en">
+<template>
     <div class="main-div">
         <div></div>
-          <beat-loader :loading="loading" :color="color" :size="size"></beat-loader>
-           <div></div>
+        <BeatLoader :loading="loading" :color="color" :size="size" />
+        <div></div>
     </div>
-    
 </template>
-<script>
+<script setup>
 import BeatLoader from 'vue-spinner/src/BeatLoader.vue';
+const color = ref('#232e52d5')
+const size = ref('24px')
+const loading = ref('loading')
 
-export default {
-    components: {
-        BeatLoader
-    },
-    props: {
-    },
-    data() {
-        return {
-            color: '#232e52d5',
-            size: '24px',
-            loading: 'loading'
-        }
-    },
-}
 </script>
 <style scoped>
 .main-div {

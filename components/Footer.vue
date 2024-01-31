@@ -1,7 +1,7 @@
 <template>
     <div class="footer">
         <hr>
-        <div>Built with vue ✌️ - Copyright 2023</div>
+        <div>Built with Nuxt ✌️ - Copyright 2024</div>
     </div>
 </template>
 <script>

@@ -6,26 +6,24 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            texts: ["Welcome", "Bienvenue", "Willkommen", "いらっしゃいませ", "Bienvenida"], // Add your rotating texts here
-            currentIndex: 0,
-            rotationInterval: 3000, // Set the duration for each text rotation in milliseconds
-        };
-    },
-    mounted() {
-        this.startRotation();
-    },
-    methods: {
-        startRotation() {
-            setInterval(() => {
-                this.currentIndex = (this.currentIndex + 1) % this.texts.length;
-            }, this.rotationInterval);
-        },
-    },
+<script setup>
+const texts = ref(["Welcome", "Bienvenue", "Willkommen", "いらっしゃいませ", "Bienvenida"]);
+const currentIndex = ref(0);
+const rotationInterval = 2500;
+// Function to update currentIndex in a rotating manner
+const rotateText = () => {
+    setInterval(() => {
+        currentIndex.value = (currentIndex.value + 1) % texts.value.length
+    }, rotationInterval);
 };
+// Start the rotation when the component is mounted
+onMounted(() => {
+    rotateText(); // Call it once to start the rotation
+});
+
+// Computed property to get the current text based on currentIndex
+// const currentText = ref(texts.value[currentIndex.value]);
+
 </script>
 
 <style scoped>

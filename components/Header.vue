@@ -6,13 +6,13 @@
         <div class="menu-links" :style="isOpen ? mobileItems : normalChild">
             <ul>
                 <li>
-                    <router-link to="/">Home</router-link>
+                    <NuxtLink to="/">Home</NuxtLink>
                 </li>
                 <li>
-                    <router-link to="/categories">Categories</router-link>
+                    <NuxtLink to="/categories">Categories</NuxtLink>
                 </li>
                 <li>
-                    <router-link to="/posts">All Posts</router-link>
+                    <NuxtLink to="/articles">Articles</NuxtLink>
                 </li>
             </ul>
         </div>
@@ -29,33 +29,27 @@
         </div>
     </div>
 </template> 
-<script>
-export default {
-    name: "Header",
-    data() {
-        return {
-            isOpen: false,
-            mobile: {
-                display: 'block',
-                textAlign: 'center',
-            },
-            mobileItems: {
-                display: 'block',
-            },
-            normal: {
-                display: '',
-            },
-            normalChild: {
-                display: ''
-            }
-        }
-    },
-    methods: {
-        displayMenu() {
-            this.isOpen = !this.isOpen
-        }
-    }
-}
+<script setup>
+// Define the data properties
+const isOpen = ref(false);
+const mobile = ref({
+    display: 'block',
+    textAlign: 'center',
+});
+const mobileItems = ref({
+    display: 'block',
+});
+const normal = ref({
+    display: '',
+});
+const normalChild = ref({
+    display: '',
+});
+
+// Define the methods
+const displayMenu = () => {
+    isOpen.value = !isOpen.value;
+};
 </script>
 <style scoped>
 .site-identity-div {

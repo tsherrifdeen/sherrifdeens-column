@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <a class="back-arrow" @click="back"><i class="fa fa-chevron-left"></i></a>
+        <a class="back-arrow" @click="back"><font-awesome-icon icon="fa-solid fa-chevron-left"></font-awesome-icon></a>
         <div class="post-details">
             <div v-if="category" class="category">
                 {{ category }}
@@ -11,15 +11,12 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    name: 'Details',
-    props: ['category', 'date'],
-    methods: {
-        back() {
-            this.$router.go(-1);
-        }
-    },
+<script setup>
+const router = useRouter()
+defineProps(['category', 'date'])
+
+const back = () => {
+    router.go(-1)
 }
 </script>
 <style scoped>

@@ -5,8 +5,8 @@
     <div class="error" v-if="error">
       There was an error while loading: {{ error }}
     </div>
-    <div v-if="blogPosts" v-for="post in formattedPosts" :key="post.index">
-      <router-link :to="{ name: 'blog', params: { slug: post.slug.current } }">
+    <div v-if="blogPosts" v-for="post in  formattedPosts " :key="post.index">
+      <NuxtLink :to="`/article/${post.slug.current}`">
         <div class="main-div">
           <div class="info">
             <div class="post-details">
@@ -21,75 +21,88 @@
               <h3 class="title">
                 {{ post.title }}
               </h3>
-              <p v-if="post.snippet" class="extract">{{ post.snippet.subString(0, 20) }}</p>
+              <p v-if="post.snippet" class="extract">{{ post.snippet.substring(0, 100) }}..</p>
             </div>
           </div>
           <div class="thumbnail">
             <img v-if="post.image.asset.url" :src="post.image.asset.url" alt="Post thumbnail" />
           </div>
         </div>
-      </router-link>
+      </NuxtLink>
     </div>
   </div>
 </template>
-<script>
-import { fetchBlogData, fetchBlogContent } from "../composables/getPosts";
-import Loader from "../components/Loader.vue"
-export default {
-  name: "Snippet",
-  props: ['category', 'query', 'route'],
-  components: { Loader },
-  data() {
-    return {
-      blogPosts: [],
-      loading: true,
-      error: null,
-    };
-  },
-  methods: {
-    toPlainText(blocks = []) {
-      blocks.map(block => {
-        if (block._type !== 'block' || !block.children) {
-          return '';
-        }
-        return block.children.map(child => child.text).join('');
-      }).join('\n\n')
-    }
-  },
-  created() {
-    if (this.route) {
-      fetchBlogContent(this.query, { "slug": this.route }).then((result) => {
-        this.blogPosts = result;
-        this.loading = false;
-        console.log(this.posts);
-      }), (error) => {
-        this.error = error;
-      };
-    } else {
-      fetchBlogData(this.query).then((result) => {
-        this.blogPosts = result;
-        this.loading = false
-      }), (error) => {
-        this.error = error;
-      };
-    }
-  },
-  computed: {
-    formattedPosts() {
-      return this.blogPosts.map((post) => {
-        const date = new Date(post._createdAt)
-        const newIndex = this.blogPosts.indexOf(post)
-        const snippet = this.toPlainText(post.body)
-        return {
-          ...post,
-          snippet,
-          formattedDate: date.toLocaleString('en-us', { year: "numeric", month: "short", day: "numeric" }),
-          index: newIndex,
-        };
-      });
-    },
-  },
+
+<script setup>
+// Define the props
+const props = defineProps(['category', 'query', 'route']);
+
+// Define reactive properties
+const blogPosts = ref([]);
+const loading = ref(true);
+const error = ref(null);
+
+// Function to convert blocks to plain text
+const toPlainText = (blocks = []) => {
+  return blocks
+    .map((block) => {
+      if (block._type !== 'block' || !block.children) {
+        return '';
+      }
+      return block.children.map((child) => child.text).join('');
+    })
+    .join('\n\n');
 };
+
+// Fetch blog data
+const fetchArticles = async () => {
+  try {
+    const result = await fetchBlogData(props.query);
+    blogPosts.value = result;
+    loading.value = false;
+  } catch (error) {
+    error.value = error.message;
+  }
+};
+
+// Fetch blog content based on route
+const fetchArticles2 = async () => {
+  try {
+    const result = await fetchBlogContent(props.query, { 'slug': props.route });
+    blogPosts.value = result;
+    loading.value = false;
+  } catch (error) {
+    error.value = error.message;
+  }
+};
+
+// Watch for changes in route and fetch data accordingly
+watchEffect(() => {
+  if (props.route) {
+    fetchArticles2();
+  } else {
+    fetchArticles();
+  }
+});
+
+// Computed property to format posts
+const formattedPosts = ref([]);
+
+// Watch for changes in blogPosts and update formattedPosts accordingly
+watchEffect(() => {
+  formattedPosts.value = blogPosts.value.map((post) => {
+    const date = new Date(post._createdAt);
+    const newIndex = blogPosts.value.indexOf(post);
+    const snippet = toPlainText(post.body);
+    return {
+      ...post,
+      snippet,
+      formattedDate: date.toLocaleString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }),
+      index: newIndex,
+    };
+  });
+});
+
 </script>
 <style scoped>
 .outer-div {
