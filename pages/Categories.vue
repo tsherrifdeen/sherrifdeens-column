@@ -35,8 +35,9 @@ const categories = ref([])
 const loading = ref(true)
 const error = ref(null)
 
-onMounted(() => document.title = "Sherrifdeen's Column - Categories")
-
+useSeoMeta({
+    title: () => `Sherrifdeen's Column - Categories`,
+})
 watchEffect(() => {
     fetchBlogData(query)
         .then(result => {

@@ -32,9 +32,8 @@ const query = `*[_type == "post" && $slug in categories[]-> slug.current] {
             }
             `
 const pageTitle = route.params.slug
-console.log(pageTitle)
-onMounted(() => {
-    document.title = `Sherrifdeen's Column - ${pageTitle}`
+useSeoMeta({
+    title: () => `Sherrifdeen's Column -  ${pageTitle}`,
 })
 
 </script>

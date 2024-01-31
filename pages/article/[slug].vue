@@ -55,8 +55,8 @@ const post = ref({})
 const error = ref(null)
 const blocks = ref({})
 
-onMounted(() => {
-    document.title = `Sherrifdeen's Column - ${route.params.slug}`
+useSeoMeta({
+    title: () => `Sherrifdeen's Column - ${route.params.slug}`
 })
 
 watchEffect(() => {

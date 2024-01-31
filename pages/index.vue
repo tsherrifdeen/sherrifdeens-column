@@ -22,7 +22,9 @@ const query = `*[_type == "post"]{
                 "category": categories[0]-> {title},
                 _createdAt,
             }[0...8]`
-onMounted(() => document.title = "Sherrifdeen's Column - Home")
+useSeoMeta({
+    title: () => `Sherrifdeen's Column - Home`,
+})
 </script>
 
 <style scoped>

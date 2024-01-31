@@ -1,6 +1,5 @@
 <script setup>
 useSeoMeta({
-  title: "Sherrifdeen's Column - Home",
   ogTitle: "Sherrifdeen's Column - Home",
   description: 'Welcome to my amazing website for random posts and ideas.',
   ogDescription: 'Welcome to my amazing website for random posts and ideas.',
